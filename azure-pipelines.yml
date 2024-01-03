@@ -8,13 +8,30 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
+  
+variables:
+  envFileName: '.env.development.local'
 
 steps:
 
 - task: DownloadSecureFile@1
   name: SecFile
   inputs:
-    secureFile: '.env.development.local'
+    secureFile: $envFileName
 
 - script: |
     echo $(SecFile.secureFilePath)
+
+- script: |
+    SEC_FILE_PATH="$(SecFile.secureFilePath)"
+    SEC_DIR=$(dirname "$SEC_FILE_PATH")
+    echo "##vso[task.setvariable variable=SecDir]$SEC_DIR"
+
+- script: |
+    echo $(SecDir)
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: $(SecDir)
+    Contents: $envFileName
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
