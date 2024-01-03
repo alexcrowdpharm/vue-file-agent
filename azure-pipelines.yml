@@ -16,4 +16,5 @@ steps:
   inputs:
     secureFile: '.env.development.local'
 
-- script: echo "$(SecFile.secureFilePath)"
+- script: |
+    echo "$(SecFile.secureFilePath)"
