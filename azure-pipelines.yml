@@ -17,7 +17,7 @@ steps:
 - task: DownloadSecureFile@1
   name: SecFile
   inputs:
-    secureFile: $envFileName
+    secureFile: $(envFileName)
 
 - script: |
     echo $(SecFile.secureFilePath)
@@ -33,5 +33,5 @@ steps:
 - task: CopyFiles@2
   inputs:
     SourceFolder: $(SecDir)
-    Contents: $envFileName
+    Contents: $(envFileName)
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
